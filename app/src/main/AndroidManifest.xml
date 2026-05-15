@@ -23,22 +23,16 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".FoodMenuActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".PaymentActivity"
-            android:exported="false"
-            android:label="Realizar Pago" />
+        <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".FoodMenuActivity" android:exported="false" />
+        <activity android:name=".SummaryActivity" android:exported="false" />
+        <activity android:name=".ProductListActivity" android:exported="false" />
+        <activity android:name=".AddEditProductActivity" android:exported="false" />
+        <activity android:name=".OrderListActivity" android:exported="false" />
+        <activity android:name=".BillingActivity" android:exported="false" />
+        <activity android:name=".TableListActivity" android:exported="false" />
+        <activity android:name=".AddEditTableActivity" android:exported="false" />
 
     </application>
 

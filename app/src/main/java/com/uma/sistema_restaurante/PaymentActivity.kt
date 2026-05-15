@@ -85,8 +85,16 @@ class PaymentActivity : AppCompatActivity() {
                 // Actualizamos el estado localmente para reflejar el cambio de inmediato en la UI
                 val mesaLocal = RestauranteData.mesas.find { it.id == mesaId }
                 mesaLocal?.apply {
-                    estaDisponible = false
-                    platosReservados = platos.toMutableList()
+                    estado = "reservada"
+                    platosReservados = platos.map {
+                        PlatoOrden(
+                            id = it.id,
+                            nombre = it.nombre,
+                            precio = it.precio,
+                            cantidad = it.cantidadSeleccionada
+                        )
+                    }.toMutableList()
+
                     totalReserva = total
                 }
                 

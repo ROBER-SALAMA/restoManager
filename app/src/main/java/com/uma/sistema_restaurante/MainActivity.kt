@@ -2,76 +2,138 @@ package com.uma.sistema_restaurante
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
-/**
- * Actividad principal que muestra el mapa de mesas del restaurante.
- * Permite visualizar qué mesas están disponibles y cuáles están reservadas.
- */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var adapter: MesaAdapter
     private lateinit var db: FirebaseFirestore
+    private lateinit var drawerLayout: DrawerLayout
+    private var listaMesas = mutableListOf<Mesa>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicializamos Firestore para obtener el estado actual de las mesas
         db = FirebaseFirestore.getInstance()
 
-        // Configuración del RecyclerView para mostrar las mesas en un formato de rejilla (2 columnas)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+
+        val navView = findViewById<NavigationView>(R.id.nav_view)
+        navView.setNavigationItemSelectedListener(this)
+
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            android.R.string.ok,
+            android.R.string.cancel
+        )
+
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
         val rvMesas = findViewById<RecyclerView>(R.id.rvMesas)
+
         rvMesas.layoutManager = GridLayoutManager(this, 2)
 
-        // Inicializamos el adaptador con la lista de mesas local
-        adapter = MesaAdapter(RestauranteData.mesas) { mesa ->
-            // Al hacer clic en una mesa disponible, abrimos el menú de comida
+        adapter = MesaAdapter(listaMesas) { mesa ->
             val intent = Intent(this, FoodMenuActivity::class.java)
+
             intent.putExtra("MESA_ID", mesa.id)
+
             startActivity(intent)
         }
+
         rvMesas.adapter = adapter
-        
-        // Sincronizamos con la base de datos para obtener el estado real de las mesas
+
         sincronizarMesasDesdeFirestore()
+
+        // Manejo moderno del botón atrás
+        onBackPressedDispatcher.addCallback(this) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
     }
 
-    /**
-     * Se ejecuta cada vez que el usuario vuelve a esta pantalla.
-     * Sirve para refrescar el estado de las mesas después de un pago exitoso.
-     */
     override fun onResume() {
         super.onResume()
         sincronizarMesasDesdeFirestore()
     }
 
-    /**
-     * Consulta Firestore para saber qué mesas están ocupadas.
-     * La persistencia se logra leyendo los documentos de la colección "mesas".
-     */
     private fun sincronizarMesasDesdeFirestore() {
+
         db.collection("mesas")
             .get()
             .addOnSuccessListener { result ->
-                // Recorremos los documentos encontrados en Firestore
+
+                listaMesas.clear()
+
                 for (document in result) {
-                    val mesaId = document.getLong("id")?.toInt() ?: -1
-                    val estaDisponible = document.getBoolean("estaDisponible") ?: true
-                    
-                    // Buscamos la mesa correspondiente en nuestra lista local y actualizamos su estado
-                    val mesaLocal = RestauranteData.mesas.find { it.id == mesaId }
-                    mesaLocal?.estaDisponible = estaDisponible
+
+                    val mesa = document.toObject(Mesa::class.java)
+
+                    // Convertimos el ID del documento a Int
+                    mesa.id = document.id.toInt()
+
+                    listaMesas.add(mesa)
                 }
-                // Notificamos al adaptador que los datos cambiaron para refrescar la interfaz (colores de las mesas)
+
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al sincronizar mesas: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.nav_mesas -> {
+                // Ya estamos aquí
+            }
+
+            R.id.nav_productos -> {
+                startActivity(Intent(this, ProductListActivity::class.java))
+            }
+
+            R.id.nav_ordenes -> {
+                startActivity(Intent(this, OrderListActivity::class.java))
+            }
+
+            R.id.nav_reservas -> {
+                Toast.makeText(
+                    this,
+                    "Funcionalidad de Reservas",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START)
+
+        return true
     }
 }
