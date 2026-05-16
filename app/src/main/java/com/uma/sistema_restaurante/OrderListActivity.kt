@@ -3,12 +3,11 @@ package com.uma.sistema_restaurante
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class OrderListActivity : AppCompatActivity() {
+class OrderListActivity : BaseActivity() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: OrderAdapter
@@ -19,6 +18,9 @@ class OrderListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_order_list)
 
         db = FirebaseFirestore.getInstance()
+        
+        // El Toolbar ya está configurado en BaseActivity
+        supportActionBar?.title = "Órdenes Pendientes"
 
         val rv = findViewById<RecyclerView>(R.id.rvOrders)
         rv.layoutManager = LinearLayoutManager(this)
@@ -52,7 +54,6 @@ class OrderListActivity : AppCompatActivity() {
     }
 
     private fun cancelarOrden(orden: Orden) {
-        // 1. Liberar la mesa
         db.collection("mesas").document(orden.mesaId)
             .update(mapOf(
                 "estado" to "libre",
@@ -61,11 +62,10 @@ class OrderListActivity : AppCompatActivity() {
                 "totalReserva" to 0.0
             ))
             .addOnSuccessListener {
-                // 2. Actualizar estado de la orden
                 db.collection("ordenes").document(orden.id)
                     .update("estado", "cancelada")
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Orden cancelada y mesa liberada", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Orden cancelada", Toast.LENGTH_SHORT).show()
                     }
             }
     }

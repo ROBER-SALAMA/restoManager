@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Locale
 
-class FoodMenuActivity : AppCompatActivity() {
+class FoodMenuActivity : BaseActivity() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: PlatoAdapter
@@ -25,6 +24,9 @@ class FoodMenuActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
         mesaId = intent.getStringExtra("MESA_ID") ?: ""
+
+        // Configurar título en el Toolbar compartido
+        supportActionBar?.title = "Menú de Comida"
 
         val tvMesaSeleccionada = findViewById<TextView>(R.id.tvMesaSeleccionada)
         tvMesaSeleccionada.text = "Pedido para Mesa $mesaId"

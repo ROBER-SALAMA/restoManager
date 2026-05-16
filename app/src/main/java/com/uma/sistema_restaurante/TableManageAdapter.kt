@@ -28,16 +28,9 @@ class TableManageAdapter(
 
     override fun onBindViewHolder(holder: TableViewHolder, position: Int) {
         val mesa = mesas[position]
-        holder.tvMesaId.text = "Mesa ${mesa.id}"
+        holder.tvMesaId.text = "Mesa: ${mesa.id}"
         holder.tvCapacidad.text = "Capacidad: ${mesa.capacidad}"
         holder.tvEstado.text = "Estado: ${mesa.estado}"
-
-        // Colores según el estado
-        when (mesa.estado.lowercase()) {
-            "libre" -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_green_dark))
-            "reservada" -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_orange_dark))
-            else -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_red_dark))
-        }
 
         holder.btnEdit.setOnClickListener { onEdit(mesa) }
         holder.btnDelete.setOnClickListener { onDelete(mesa) }

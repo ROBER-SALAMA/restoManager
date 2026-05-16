@@ -15,28 +15,27 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class PaymentActivity : AppCompatActivity() {
 
-    // Instancia de Firestore para interactuar con la base de datos en la nube
+    // Instancia de Firestore
     private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment)
 
-        // Inicializamos Firebase Firestore
+        // Inicializar Firestore
         db = FirebaseFirestore.getInstance()
 
-        // Obtenemos los datos pasados desde FoodMenuActivity
-        val mesaId = intent.getIntExtra("MESA_ID", -1)
+        // Obtener datos enviados desde FoodMenuActivity
+        val mesaId = intent.getStringExtra("MESA_ID") ?: ""
         val total = intent.getDoubleExtra("TOTAL", 0.0)
-        
-        // Obtenemos la lista de platos seleccionados para guardarlos en el registro de la reserva
+
+        // Obtener lista de platos seleccionados
         @Suppress("UNCHECKED_CAST")
-        val platosSeleccionados = intent.getSerializableExtra("PLATOS") as? ArrayList<Plato> ?: arrayListOf()
+        val platosSeleccionados =
+            intent.getSerializableExtra("PLATOS") as? ArrayList<Plato> ?: arrayListOf()
 
-        // Referencias a los componentes de la interfaz
+        // Referencias UI
         val tvTotal = findViewById<TextView>(R.id.tvTotalPagar)
-        tvTotal.text = "Total a pagar: $${String.format("%.2f", total)}"
-
         val etNombre = findViewById<EditText>(R.id.etNombreTarjeta)
         val etNumero = findViewById<EditText>(R.id.etNumeroTarjeta)
         val etFecha = findViewById<EditText>(R.id.etFechaExpiracion)
@@ -44,65 +43,113 @@ class PaymentActivity : AppCompatActivity() {
         val rbVisa = findViewById<RadioButton>(R.id.rbVisa)
         val btnPagar = findViewById<Button>(R.id.btnPagar)
 
-        // Acción al hacer clic en el botón de pagar
-        btnPagar.setOnClickListener {
-            val nombre = etNombre.text.toString()
-            val numero = etNumero.text.toString()
-            val fecha = etFecha.text.toString()
-            val cvv = etCVV.text.toString()
+        // Mostrar total
+        tvTotal.text = "Total a pagar: $${String.format("%.2f", total)}"
 
-            // Validación básica de los campos de la tarjeta
-            if (nombre.isEmpty() || numero.length < 16 || fecha.isEmpty() || cvv.length < 3) {
-                Toast.makeText(this, "Por favor complete los datos de la tarjeta correctamente", Toast.LENGTH_SHORT).show()
+        // Acción botón pagar
+        btnPagar.setOnClickListener {
+
+            val nombre = etNombre.text.toString().trim()
+            val numero = etNumero.text.toString().trim()
+            val fecha = etFecha.text.toString().trim()
+            val cvv = etCVV.text.toString().trim()
+
+            // Validaciones básicas
+            if (nombre.isEmpty()) {
+                Toast.makeText(this, "Ingrese el nombre de la tarjeta", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Determinamos el tipo de tarjeta seleccionado
-            val tipo = if (rbVisa.isChecked) "Visa" else "Mastercard"
-            
-            // Si la validación pasa, procedemos a guardar la reserva en Firestore para que sea persistente
-            guardarReservaEnFirestore(mesaId, platosSeleccionados, total)
+            if (numero.length < 16) {
+                Toast.makeText(this, "Número de tarjeta inválido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (fecha.isEmpty()) {
+                Toast.makeText(this, "Ingrese la fecha de expiración", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (cvv.length < 3) {
+                Toast.makeText(this, "CVV inválido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Tipo de tarjeta
+            val tipoTarjeta = if (rbVisa.isChecked) {
+                "Visa"
+            } else {
+                "Mastercard"
+            }
+
+            // Procesar pago y guardar reserva
+            guardarReservaEnFirestore(
+                mesaId = mesaId,
+                platos = platosSeleccionados,
+                total = total
+            )
         }
     }
 
     /**
-     * Sube la información de la reserva a Firebase Firestore.
-     * Esto asegura que el estado de la mesa se mantenga aunque se cierre la app.
+     * Guarda la reserva en Firestore.
      */
-    private fun guardarReservaEnFirestore(mesaId: Int, platos: List<Plato>, total: Double) {
-        // Estructura de datos que se enviará a Firestore
+    private fun guardarReservaEnFirestore(
+        mesaId: String,
+        platos: List<Plato>,
+        total: Double
+    ) {
+
+        // Convertir platos a PlatoOrden
+        val platosOrdenados = platos.map {
+            PlatoOrden(
+                id = it.id,
+                nombre = it.nombre,
+                precio = it.precio,
+                cantidad = it.cantidadSeleccionada
+            )
+        }
+
+        // Datos a guardar
         val mesaData = mapOf(
             "id" to mesaId,
-            "estaDisponible" to false,
-            "platosReservados" to platos,
+            "estado" to "reservada",
+            "platosReservados" to platosOrdenados,
             "totalReserva" to total
         )
 
-        // Guardamos en la colección "mesas" usando el ID de la mesa como nombre del documento
-        db.collection("mesas").document(mesaId.toString())
+        // Guardar en Firestore
+        db.collection("mesas")
+            .document(mesaId)
             .set(mesaData)
             .addOnSuccessListener {
-                // Actualizamos el estado localmente para reflejar el cambio de inmediato en la UI
-                val mesaLocal = RestauranteData.mesas.find { it.id == mesaId }
+
+                // Actualizar datos localmente
+                val mesaLocal = RestauranteData.mesas.find {
+                    it.id == mesaId
+                }
+
                 mesaLocal?.apply {
                     estado = "reservada"
-                    platosReservados = platos.map {
-                        PlatoOrden(
-                            id = it.id,
-                            nombre = it.nombre,
-                            precio = it.precio,
-                            cantidad = it.cantidadSeleccionada
-                        )
-                    }.toMutableList()
-
+                    platosReservados = platosOrdenados.toMutableList()
                     totalReserva = total
                 }
-                
-                Toast.makeText(this, "¡Pago exitoso y reserva confirmada!", Toast.LENGTH_LONG).show()
-                finish() // Regresa a la pantalla principal
+
+                Toast.makeText(
+                    this,
+                    "¡Pago exitoso y reserva confirmada!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al guardar reserva: ${e.message}", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(
+                    this,
+                    "Error al guardar reserva: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
     }
 }

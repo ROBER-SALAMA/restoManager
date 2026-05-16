@@ -9,19 +9,20 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Número o ID de Mesa"
+        android:hint="Nombre de la Mesa (letras y números)"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTableId"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Capacidad"
-        android:layout_marginTop="8dp"
+        android:hint="Capacidad de personas"
+        android:layout_marginTop="12dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etTableCapacity"
@@ -33,22 +34,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Estado"
+        android:text="Estado de la Mesa"
         android:layout_marginTop="16dp"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <Spinner
         android:id="@+id/spTableStatus"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:entries="@array/table_status_array" />
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp" />
 
     <Button
         android:id="@+id/btnSaveTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar Mesa"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        style="@style/Widget.MaterialComponents.Button" />
+
+    <Button
+        android:id="@+id/btnDeleteTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar Mesa"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:textColor="@android:color/holo_red_dark" />
 
 </LinearLayout>

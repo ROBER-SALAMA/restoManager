@@ -6,13 +6,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Locale
 
-class SummaryActivity : AppCompatActivity() {
+class SummaryActivity : BaseActivity() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: SummaryAdapter
@@ -24,6 +23,10 @@ class SummaryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_summary)
 
         db = FirebaseFirestore.getInstance()
+        
+        // Título en el Toolbar compartido
+        supportActionBar?.title = "Resumen de Pedido"
+
         mesaId = intent.getStringExtra("MESA_ID") ?: ""
         @Suppress("DEPRECATION")
         platosOrden = intent.getSerializableExtra("PLATOS_ORDEN") as? ArrayList<PlatoOrden> ?: mutableListOf()

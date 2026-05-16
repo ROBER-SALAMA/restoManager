@@ -6,7 +6,7 @@ import java.io.Serializable
  * Clase que representa una Mesa en el restaurante.
  */
 data class Mesa(
-    var id: Int = 0,
+    var id: String = "",
     var capacidad: Int = 0,
     var estado: String = "libre",
     var platosReservados: MutableList<PlatoOrden> = mutableListOf(),
