@@ -27,6 +27,7 @@ class AddEditTableActivity : AppCompatActivity() {
         val spStatus = findViewById<Spinner>(R.id.spTableStatus)
         val btnSave = findViewById<Button>(R.id.btnSaveTable)
 
+        // Configurar Spinner
         val adapter = ArrayAdapter.createFromResource(
             this,
             R.array.table_status_array,
@@ -35,36 +36,45 @@ class AddEditTableActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spStatus.adapter = adapter
 
+        // Si es edición, cargar datos
         mesa?.let {
-            etTableId.setText(it.id)
-            etTableId.isEnabled = false
+            etTableId.setText(it.id.toString())
+            etTableId.isEnabled = false // No permitir cambiar el ID de una mesa existente
             etCapacity.setText(it.capacidad.toString())
             val statusArray = resources.getStringArray(R.array.table_status_array)
             val index = statusArray.indexOf(it.estado)
             if (index >= 0) spStatus.setSelection(index)
+            btnSave.text = "Actualizar Mesa"
         }
 
         btnSave.setOnClickListener {
-            val id = etTableId.text.toString()
+            val idStr = etTableId.text.toString()
             val capacity = etCapacity.text.toString().toIntOrNull() ?: 0
             val status = spStatus.selectedItem.toString()
 
-            if (id.isNotEmpty()) {
+            if (idStr.isNotEmpty()) {
+                val tableIdInt = idStr.toIntOrNull()
+                if (tableIdInt == null) {
+                    Toast.makeText(this, "El ID debe ser un número", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val data = hashMapOf(
-                    "id" to id,
+                    "id" to tableIdInt,
                     "capacidad" to capacity,
                     "estado" to status
                 )
 
-                if (mesa == null) {
-                    db.collection("mesas").document(id).set(data).addOnSuccessListener {
+                // Usamos el ID de la mesa como nombre del documento
+                db.collection("mesas").document(tableIdInt.toString())
+                    .set(data)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Mesa guardada correctamente", Toast.LENGTH_SHORT).show()
                         finish()
                     }
-                } else {
-                    db.collection("mesas").document(mesa!!.id.toString()).update(data as Map<String, Any>).addOnSuccessListener {
-                        finish()
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
-                }
             } else {
                 Toast.makeText(this, "El ID de la mesa es obligatorio", Toast.LENGTH_SHORT).show()
             }

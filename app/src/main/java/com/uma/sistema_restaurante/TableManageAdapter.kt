@@ -17,7 +17,8 @@ class TableManageAdapter(
         val tvMesaId: TextView = view.findViewById(R.id.tvMesaNumero)
         val tvCapacidad: TextView = view.findViewById(R.id.tvMesaCapacidad)
         val tvEstado: TextView = view.findViewById(R.id.tvMesaEstado)
-        val btnEdit: ImageButton = ImageButton(view.context) // Temporary creation if not in layout, but let's assume we use a specific layout or reuse
+        val btnEdit: ImageButton = view.findViewById(R.id.btnEditMesa)
+        val btnDelete: ImageButton = view.findViewById(R.id.btnDeleteMesa)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TableViewHolder {
@@ -29,17 +30,17 @@ class TableManageAdapter(
         val mesa = mesas[position]
         holder.tvMesaId.text = "Mesa ${mesa.id}"
         holder.tvCapacidad.text = "Capacidad: ${mesa.capacidad}"
-        holder.tvEstado.text = mesa.estado
+        holder.tvEstado.text = "Estado: ${mesa.estado}"
 
-        // For management, we might want to add edit/delete buttons to item_mesa or use a different layout.
-        // Let's modify item_mesa.xml to include management buttons or use long click.
-        // To follow the "modern and functional" request, let's use a specific management item layout.
-        
-        holder.itemView.setOnClickListener { onEdit(mesa) }
-        holder.itemView.setOnLongClickListener {
-            onDelete(mesa)
-            true
+        // Colores según el estado
+        when (mesa.estado.lowercase()) {
+            "libre" -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_green_dark))
+            "reservada" -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_orange_dark))
+            else -> holder.tvEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_red_dark))
         }
+
+        holder.btnEdit.setOnClickListener { onEdit(mesa) }
+        holder.btnDelete.setOnClickListener { onDelete(mesa) }
     }
 
     override fun getItemCount() = mesas.size

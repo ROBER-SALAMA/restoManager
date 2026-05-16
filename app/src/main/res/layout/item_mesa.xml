@@ -8,35 +8,68 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center">
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvMesaNumero"
+        <LinearLayout
+            android:id="@+id/llInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mesa 1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/llActions"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvMesaCapacidad"
+            <TextView
+                android:id="@+id/tvMesaNumero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mesa 1"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMesaCapacidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capacidad: 4"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvMesaEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Disponible"
+                android:textColor="@android:color/holo_green_dark"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Capacidad: 4"
-            android:textSize="14sp" />
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvMesaEstado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Disponible"
-            android:textColor="@android:color/holo_green_dark"
-            android:textStyle="italic" />
+            <ImageButton
+                android:id="@+id/btnEditMesa"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="@color/black" />
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnDeleteMesa"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_delete"
+                app:tint="@android:color/holo_red_dark" />
+        </LinearLayout>
+
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -7,14 +7,17 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var adapter: MesaAdapter
     private lateinit var db: FirebaseFirestore
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         db = FirebaseFirestore.getInstance()
 
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -47,22 +50,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         val rvMesas = findViewById<RecyclerView>(R.id.rvMesas)
-
         rvMesas.layoutManager = GridLayoutManager(this, 2)
 
         adapter = MesaAdapter(listaMesas) { mesa ->
             val intent = Intent(this, FoodMenuActivity::class.java)
-
             intent.putExtra("MESA_ID", mesa.id)
-
             startActivity(intent)
         }
 
         rvMesas.adapter = adapter
 
+        // Botón flotante habilitado para abrir el formulario de agregar mesa
+        findViewById<FloatingActionButton>(R.id.fabAddMesaMain)
+            .setOnClickListener {
+                startActivity(Intent(this, AddEditTableActivity::class.java))
+            }
+
         sincronizarMesasDesdeFirestore()
 
-        // Manejo moderno del botón atrás
+        // Manejo del botón atrás
         onBackPressedDispatcher.addCallback(this) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -79,20 +85,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun sincronizarMesasDesdeFirestore() {
-
         db.collection("mesas")
+            .orderBy("id")
             .get()
             .addOnSuccessListener { result ->
-
                 listaMesas.clear()
 
                 for (document in result) {
-
                     val mesa = document.toObject(Mesa::class.java)
-
-                    // Convertimos el ID del documento a Int
-                    mesa.id = document.id.toInt()
-
                     listaMesas.add(mesa)
                 }
 
@@ -116,19 +116,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             R.id.nav_productos -> {
-                startActivity(Intent(this, ProductListActivity::class.java))
+                startActivity(
+                    Intent(this, ProductListActivity::class.java)
+                )
             }
 
             R.id.nav_ordenes -> {
-                startActivity(Intent(this, OrderListActivity::class.java))
+                startActivity(
+                    Intent(this, OrderListActivity::class.java)
+                )
             }
 
             R.id.nav_reservas -> {
-                Toast.makeText(
-                    this,
-                    "Funcionalidad de Reservas",
-                    Toast.LENGTH_SHORT
-                ).show()
+                startActivity(
+                    Intent(this, TableListActivity::class.java)
+                )
             }
         }
 
