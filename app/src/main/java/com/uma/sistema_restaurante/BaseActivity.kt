@@ -78,12 +78,6 @@ open class BaseActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     if (this !is MainActivity) finish()
                 }
             }
-            R.id.nav_register -> {
-                if (this.javaClass != RegisterActivity::class.java) {
-                    startActivity(Intent(this, RegisterActivity::class.java))
-                    if (this !is MainActivity) finish()
-                }
-            }
             R.id.nav_logout -> {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, LoginActivity::class.java)

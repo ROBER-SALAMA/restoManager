@@ -18,10 +18,6 @@
             android:icon="@android:drawable/ic_menu_agenda"
             android:title="Órdenes" />
         <item
-            android:id="@+id/nav_register"
-            android:icon="@android:drawable/ic_menu_add"
-            android:title="Registrar usuario" />
-        <item
             android:id="@+id/nav_logout"
             android:icon="@android:drawable/ic_lock_power_off"
             android:title="Cerrar sesión" />

@@ -9,14 +9,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-       <!-- <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarTables"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="Administrar Mesas"
-            app:titleTextColor="@android:color/white" />-->
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTablesManage"
             android:layout_width="match_parent"
@@ -31,6 +23,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="?attr/colorPrimary"
         app:tint="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

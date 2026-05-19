@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Layout de creación de cuenta (Registro) rediseñado.
-    Mantiene la coherencia visual con la pantalla de Login (colores, fuentes y componentes).
--->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#FDF8F5">
+    android:background="?android:attr/windowBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +13,6 @@
         android:padding="24dp"
         android:gravity="center_horizontal">
 
-        <!-- ivLogo: Icono representativo del restaurante -->
         <ImageView
             android:id="@+id/ivLogoRegister"
             android:layout_width="60dp"
@@ -31,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="RestoManager"
-            android:textColor="#A04000"
+            android:textColor="?attr/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginTop="8dp"/>
@@ -41,18 +36,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crea una cuenta para comenzar"
-            android:textColor="#757575"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- cardRegister: Tarjeta contenedora del formulario de registro -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:strokeColor="#EEEEEE"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:strokeColor="?attr/colorOnSurface"
+            app:strokeWidth="0.5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,24 +61,23 @@
                     android:text="Crear Cuenta"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Completa tus datos para registrarte"
-                    android:textColor="#9E9E9E"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="20dp"/>
 
-                <!-- Campo para el Nombre Completo -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre Completo"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#424242"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -101,14 +95,13 @@
                         android:inputType="textPersonName"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo para el Email -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#424242"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -126,14 +119,13 @@
                         android:inputType="textEmailAddress"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo para la Contraseña -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Password"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#424242"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -152,14 +144,13 @@
                         android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Campo para Confirmar Contraseña -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Confirmar Password"
                     android:textStyle="bold"
                     android:textSize="14sp"
-                    android:textColor="#424242"/>
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -177,7 +168,6 @@
                         android:inputType="textPassword"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- btnRegisterUser: Botón para procesar el registro -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
@@ -185,16 +175,15 @@
                     android:text="Registrarse"
                     android:layout_marginTop="24dp"
                     app:cornerRadius="28dp"
-                    android:backgroundTint="#A04000"
+                    android:backgroundTint="?attr/colorPrimary"
                     android:textAllCaps="false"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#EEEEEE"
+                    android:background="?android:attr/dividerVertical"
                     android:layout_marginTop="24dp"/>
 
-                <!-- Enlace para volver al Login -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,14 +195,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="¿Ya tienes cuenta? "
-                        android:textColor="#757575"/>
+                        android:textColor="?android:attr/textColorSecondary"/>
 
                     <TextView
                         android:id="@+id/tvBackToLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Inicia Sesión"
-                        android:textColor="#A04000"
+                        android:textColor="?attr/colorPrimary"
                         android:textStyle="bold"
                         android:clickable="true"
                         android:focusable="true"/>
