@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardMesa"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Mesa 1"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Capacidad: 4"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp" />
 
         <TextView
@@ -39,7 +42,6 @@
             android:textColor="@android:color/holo_green_dark"
             android:textStyle="italic" />
 
-        <!-- Sección de acciones que se puede ocultar -->
         <LinearLayout
             android:id="@+id/layoutAccionesMesa"
             android:layout_width="match_parent"
@@ -51,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
-                android:background="#EEEEEE" />
+                android:background="?android:attr/dividerVertical" />
 
             <LinearLayout
                 android:id="@+id/llActions"
@@ -67,7 +69,7 @@
                     android:layout_height="40dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@android:drawable/ic_menu_edit"
-                    app:tint="@color/black" />
+                    app:tint="?android:attr/textColorPrimary" />
 
                 <ImageButton
                     android:id="@+id/btnDeleteMesa"
@@ -81,4 +83,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

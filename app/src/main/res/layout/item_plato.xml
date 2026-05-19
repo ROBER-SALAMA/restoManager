@@ -7,8 +7,7 @@
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp"
-    app:strokeColor="#EEEEEE"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre del Plato"
-                    android:textColor="#333333"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -53,7 +52,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text="Descripción del platillo"
-                    android:textColor="#757575"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp" />
 
                 <TextView
@@ -62,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="$0.00"
-                    android:textColor="#A04000"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -72,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="12dp"
-            android:background="#F0F0F0" />
+            android:background="#33AAAAAA" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +86,7 @@
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_input_delete"
-                app:tint="#A04000" />
+                app:tint="?attr/colorPrimary" />
 
             <TextView
                 android:id="@+id/tvCantidad"
@@ -95,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="0"
-                android:textColor="#333333"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -105,7 +104,7 @@
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_input_add"
-                app:tint="#A04000" />
+                app:tint="?attr/colorPrimary" />
         </LinearLayout>
 
     </LinearLayout>
