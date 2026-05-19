@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddEditProductActivity : AppCompatActivity() {
@@ -15,6 +16,11 @@ class AddEditProductActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_product)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
 
         db = FirebaseFirestore.getInstance()
         @Suppress("DEPRECATION")
@@ -27,12 +33,17 @@ class AddEditProductActivity : AppCompatActivity() {
         val etTotal = findViewById<EditText>(R.id.etProductTotal)
         val btnGuardar = findViewById<Button>(R.id.btnSaveProduct)
 
-        producto?.let {
-            etNombre.setText(it.nombre)
-            etDesc.setText(it.descripcion)
-            etPrecio.setText(it.precio.toString())
-            etImagen.setText(it.imagen)
-            etTotal.setText(it.total.toString())
+        if (producto != null) {
+            supportActionBar?.title = "Editar Producto"
+            producto?.let {
+                etNombre.setText(it.nombre)
+                etDesc.setText(it.descripcion)
+                etPrecio.setText(it.precio.toString())
+                etImagen.setText(it.imagen)
+                etTotal.setText(it.total.toString())
+            }
+        } else {
+            supportActionBar?.title = "Agregar Producto"
         }
 
         btnGuardar.setOnClickListener {

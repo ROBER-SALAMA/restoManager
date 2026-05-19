@@ -8,68 +8,77 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/llInfo"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvMesaNumero"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/llActions"
-            android:orientation="vertical">
+            android:text="Mesa 1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvMesaNumero"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mesa 1"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvMesaCapacidad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Capacidad: 4"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tvMesaCapacidad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Capacidad: 4"
-                android:textSize="14sp" />
+        <TextView
+            android:id="@+id/tvMesaEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Disponible"
+            android:textColor="@android:color/holo_green_dark"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/tvMesaEstado"
-                android:layout_width="wrap_content"
+        <!-- Sección de acciones que se puede ocultar -->
+        <LinearLayout
+            android:id="@+id/layoutAccionesMesa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="#EEEEEE" />
+
+            <LinearLayout
+                android:id="@+id/llActions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Disponible"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="italic" />
+                android:layout_marginTop="8dp"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnEditMesa"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_edit"
+                    app:tint="@color/black" />
+
+                <ImageButton
+                    android:id="@+id/btnDeleteMesa"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@android:drawable/ic_menu_delete"
+                    app:tint="@android:color/holo_red_dark" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/llActions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btnEditMesa"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_edit"
-                app:tint="@color/black" />
-
-            <ImageButton
-                android:id="@+id/btnDeleteMesa"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_delete"
-                app:tint="@android:color/holo_red_dark" />
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

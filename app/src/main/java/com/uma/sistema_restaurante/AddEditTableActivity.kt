@@ -9,6 +9,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddEditTableActivity : AppCompatActivity() {
@@ -19,6 +20,11 @@ class AddEditTableActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_table)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { finish() }
 
         db = FirebaseFirestore.getInstance()
         @Suppress("DEPRECATION")
@@ -39,17 +45,22 @@ class AddEditTableActivity : AppCompatActivity() {
         spStatus.adapter = adapter
 
         // Si estamos editando
-        mesa?.let {
-            etTableId.setText(it.id)
-            etTableId.isEnabled = false // El nombre (ID) no se edita, se crea uno nuevo si se desea cambiar
-            etCapacity.setText(it.capacidad.toString())
-            
-            val statusArray = resources.getStringArray(R.array.table_status_array)
-            val index = statusArray.indexOf(it.estado)
-            if (index >= 0) spStatus.setSelection(index)
-            
-            btnSave.text = "Actualizar Mesa"
-            btnDelete.visibility = View.VISIBLE
+        if (mesa != null) {
+            supportActionBar?.title = "Editar Mesa"
+            mesa?.let {
+                etTableId.setText(it.id)
+                etTableId.isEnabled = false 
+                etCapacity.setText(it.capacidad.toString())
+                
+                val statusArray = resources.getStringArray(R.array.table_status_array)
+                val index = statusArray.indexOf(it.estado)
+                if (index >= 0) spStatus.setSelection(index)
+                
+                btnSave.text = "Actualizar Mesa"
+                btnDelete.visibility = View.VISIBLE
+            }
+        } else {
+            supportActionBar?.title = "Agregar Mesa"
         }
 
         btnSave.setOnClickListener {

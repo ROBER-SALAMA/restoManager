@@ -17,6 +17,7 @@ class MesaAdapter(
         val tvMesaNumero: TextView = view.findViewById(R.id.tvMesaNumero)
         val tvMesaCapacidad: TextView = view.findViewById(R.id.tvMesaCapacidad)
         val tvMesaEstado: TextView = view.findViewById(R.id.tvMesaEstado)
+        val layoutAcciones: View = view.findViewById(R.id.layoutAccionesMesa)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MesaViewHolder {
@@ -30,6 +31,9 @@ class MesaAdapter(
         holder.tvMesaCapacidad.text = "Capacidad: ${mesa.capacidad}"
         holder.tvMesaEstado.text = mesa.estado.replaceFirstChar { it.uppercase() }
         
+        // Ocultar botones de editar/eliminar en la pantalla de Nueva Orden
+        holder.layoutAcciones.visibility = View.GONE
+        
         when (mesa.estado) {
             "libre" -> {
                 holder.tvMesaEstado.setTextColor(holder.itemView.context.getColor(android.R.color.holo_green_dark))
@@ -42,7 +46,6 @@ class MesaAdapter(
             }
         }
 
-        // Permitimos clic en cualquier estado para gestionar o agregar productos
         holder.cardMesa.setOnClickListener { onMesaClick(mesa) }
     }
 

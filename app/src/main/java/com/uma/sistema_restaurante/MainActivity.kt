@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : BaseActivity() {
@@ -32,10 +31,6 @@ class MainActivity : BaseActivity() {
             startActivity(intent)
         }
         rvMesas.adapter = adapter
-
-        findViewById<FloatingActionButton>(R.id.fabAddMesaMain).setOnClickListener {
-            startActivity(Intent(this, AddEditTableActivity::class.java))
-        }
 
         sincronizarMesasDesdeFirestore()
     }
