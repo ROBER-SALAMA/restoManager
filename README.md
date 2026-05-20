@@ -357,7 +357,8 @@ Este proyecto fue desarrollado como trabajo de curso. Ver `LICENSE` para más de
 
 **Roberto Salama** - [ROBER-SALAMA](https://github.com/ROBER-SALAMA)
 **Jacqueline Cruz**- [yaquiC](https://github.com/yaquiC)
-**Cesar Leiva** - [cesar]
+
+**Cesar Leiva** - [Cesar-Leiva](https://github.com/Cesar-Leiva)
 
 Proyecto Final - Desarrollo de Aplicaciones Móviles 1
 
