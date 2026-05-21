@@ -361,6 +361,8 @@ Este proyecto fue desarrollado como trabajo de curso. Ver `LICENSE` para más de
 
 **Cesar Leiva** - [Cesar-Leiva](https://github.com/Cesar-Leiva)
 
+**Flor Hernandez**
+
 Proyecto Final - Desarrollo de Aplicaciones Móviles 1
 
 ---
